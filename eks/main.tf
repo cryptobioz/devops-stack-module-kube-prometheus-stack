@@ -8,6 +8,9 @@ module "kube-prometheus-stack" {
   namespace        = var.namespace
   dependency_ids   = var.dependency_ids
 
+  app_autosync = var.app_autosync
+  app_skip_crds = var.app_skip_crds
+
   metrics_archives = var.metrics_archives
   prometheus       = var.prometheus
   alertmanager     = var.alertmanager
