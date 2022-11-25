@@ -17,7 +17,7 @@ resource "argocd_project" "this" {
 
   spec {
     description  = "kube-prometheus-stack application project"
-    source_repos = ["https://github.com/camptocamp/devops-stack-module-kube-prometheus-stack.git"]
+    source_repos = ["https://prometheus-community.github.io/helm-charts"]
 
     destination {
       name      = "in-cluster"
@@ -91,15 +91,12 @@ resource "argocd_application" "this" {
     project = argocd_project.this.metadata.0.name
 
     source {
-      repo_url        = "https://github.com/camptocamp/devops-stack-module-kube-prometheus-stack.git"
-      path            = "charts/kube-prometheus-stack"
+      repo_url        = "https://prometheus-community.github.io/helm-charts"
+      chart           = "kube-prometheus-stack"
       target_revision = var.target_revision
-      plugin {
-        name = "kustomized-helm"
-        env {
-          name  = "HELM_VALUES"
-          value = data.utils_deep_merge_yaml.values.output
-        }
+      helm {
+        skip_crds = var.app_skip_crds
+        values = data.utils_deep_merge_yaml.values.output
       }
     }
 
