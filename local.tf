@@ -200,6 +200,9 @@ locals {
         ]
       }
       prometheusSpec = merge({
+        ruleSelectorNilUsesHelmValues = false
+        serviceMonitorSelectorNilUsesHelmValues = false
+        podMonitorSelectorNilUsesHelmValues = false
         portName = "proxy"
         initContainers = [
           {
